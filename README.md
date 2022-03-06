@@ -10,7 +10,7 @@
 - [What needs to be accomplished](#what-needs-to-be-accomplished)
 - [ML Workflow](#ml-workflow)
     - [Data Gathering](#data-gathering)
-    - [Data Cleaning & Preprocessing](#data-preprocessing)
+    - [Data Cleaning & Preprocessing](#data-cleaning-&-preprocessing)
     - [Data Segmenation](#data-segmenation)
     - [Feature Extraction](#feature-extraction)
     - [Training Classifiers](#training-classifiers)
@@ -73,11 +73,52 @@ The vision of our project is to create a major impact on reducing the risk of dr
 
 There're several ways to detect drinking events reliably and accurately such as: measuring the blood alcohol content (BAC) or transdermal alcohol content (TAC). However, passively measuring BAC or TAC in real-time is challenging and impractical. Some smartphone applications allow users to enter their height, weight, and number of drinks consumed over a period of time to calculate their estimated BAC, but these require active user input that could lead to selection bias and obstruct large-scale adoption. Some smartwatches can measure TAC but these devices are expensive. But, smartphone-based solutions are readily scalable since they require no new technological adoption by the user.
 
-By getting insights from the above research papers, we have come up with a system which uses mobile phone gyroscope data as well as TAC readings (to be served as the ground-truth when training the system to make classifications, rather than using potentially biased self-reports), that is collected from several volunteers participating in alcohol-related events, to train a classifier model to detect whether a user is sober or not. We'll be running the trained model on a server such that any e-scooter sharing service can use our API to send the user's gyroscope data to the server and get the results back within a few seconds. The mobile phone application will need to send the gyroscope data continuously (or at least continuously after a certain interval) to the server to track the user's activity. Since we're using raw gyroscope data rather than highly sensitive user data such as keystrokes, calls or location, it'll be very important for the system's adoption as digital privacy concerns grow. In addition to the server and the API, we'll also create a prototype mobile phone application that can measure gyroscope data and send them to the server in real-time and also to display the results.
+By getting insights from the above research papers, we have come up with a system which uses mobile phone gyroscope data as well as TAC readings (to be served as the ground-truth when training the system to make classifications, rather than using potentially biased self-reports), that is collected from several volunteers participating in alcohol-related events, to train a classifier model to detect whether a user is sober or not. We'll be running the trained model on a server such that any e-scooter sharing service can use our API to send the user's gyroscope data to the server and get the results back within a few seconds. The mobile phone application will need to send the gyroscope data continuously (or at least continuously after a certain interval) to the server to track the user's activity. Since we're using raw gyroscope data rather than highly sensitive user data such as keystrokes, calls or location, it'll be very important for the system's adoption as digital privacy concerns grow. In addition to the server and the API, we'll also create a prototype mobile phone application that can measure gyroscope data and send them to the server in real-time as well as to display the results.
 
 ## What needs to be accomplished
 
+Given the high-level requirements of the project, we were able to split the requirements into five deliverables:
+
+- **Data Collection**: We have to gather data from various volunteers to train the model.
+- **A classifier model that can accurately detect sobriety**: We need to train a classifier model to detect whether a user is sober or not.
+- **A server that can serve the model**: We need to create a server that runs the trained model and can serve the model to the e-scooter sharing services via an API.
+- **A mobile phone application**: We need to create a (prototype) mobile phone application that can measure gyroscope data and send them to the server in real-time as well as to display the results.
+- **The server should be scalable, it must be able to recieve and handle streams of data from multiple users, and it must be able to run the classifier model in real-time for multiple users**: We need to find solutions for all these challenges. We will need to parallelize the server program to handle multiple users. Using HTTP/2 might be a good option since it is highly efficient, and has fully asynchronous multiplexing of requests using streams.
+
 ## ML Workflow
+
+Following is the workflow that we have planned for the machine learning aspect of the project. All the data processing and machine learning implementations will be done in [this](https://github.com/sathiiii/sobriety-detection-using-mobile-phone-gyroscope-data/tree/8afea3cb84adac050bc8006ac43bcd78b98fd71a) repository separately because of the git LFS constraints.
+
+### Data Gathering
+
+Our machine learning model will have to deal with following kind of time-series gyroscope / accelerometer data:
+
+<img src="./docs/images/time-series.jpg" width=100% />
+
+A Gyroscope can be understood as a device that is used to maintain a reference direction or provide stability in navigation, stabilizers, etc. Similarly, a gyroscope or a Gyro sensor is present in a smartphone to sense angular rotational velocity and acceleration.
+
+However, since collecting data from scratch using volunteers is not feasible given the time-frame for the project, we will be using data from [this](http://archive.ics.uci.edu/ml/datasets/Bar+Crawl%3A+Detecting+Heavy+Drinking) pre-existing accelerometer dataset that was collected from 13 participants in a bar crawl event. We'll be using this dataset to build a classifier model as a **proof of concept**. The dataset also provide TAC readings for each participant that can be used as the ground-truth labels when training the model. The TAC readings have been already cleaned by:
+
+1. Processing with a zero-phase low-pass filter to smooth noise without shifting phase.
+2. Shifting backwards by 45 minutes so the labels more closely match the true intoxication of the participant (since alcohol takes about 45 minutes to exit through the skin).
+
+Following is a snapshot of how the data looks like when grouped by participant:
+
+<img src="./docs/images/data.png" />
+
+TAC has been measured in g/dl where *0.08 is the legal limit* for intoxication while driving. If the TAC reading is less than 0.02, the participant is considered to be *not drunk*. If the TAC reading is greater than 0.02 and less than 0.08, the participant is considered to be *sober*. If it is greater than 0.08, the participant is considered to be *intoxicated*.
+
+The accelerometer data was collected from smartphones at a sampling rate of 40Hz. TAC data was collected using SCRAM ankle bracelets and was collected at 30 minute intervals.
+
+### Data Cleaning & Preprocessing
+
+### Data Segmentation
+
+### Feature Extraction
+
+### Training Classifiers
+
+### Evaluating Performance
 
 ## Measuring the Success of the System
 
