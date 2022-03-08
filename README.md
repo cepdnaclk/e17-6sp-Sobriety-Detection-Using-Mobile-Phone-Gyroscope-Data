@@ -122,6 +122,17 @@ The accelerometer data was collected from smartphones at a sampling rate of 40Hz
 
 ## Measuring the Success of the System
 
+To validate the results of the end product throughout the implementation and testing phases, we will be using SCRAM ankle bracelets to measure the TAC readings, so we can compare those with our model's predictions. Following is a picture of such SCRAM ankle bracelet:
+
+<img src="./docs/images/scram.webp" width=100% />
+
+Since we have an already formulated goal for the end product, we'll use the following metrics to continuously measure the success of the project.
+
+- **Measuring the before and the after**: Looking at the before and the after of the system is a very good way to measure the success. To do that, we'll keep track of the **time to market**, which is the time taken to deliver the next valueable thing. This will be our highest priority because we want to make sure that we're able to satisfy the product owner through early and continuous delivery of valueable software. We'll always monitor the **product owner's satisfaction level** in each meeting by asking them to rate how well they percieve things are working according to a numeric scale. We'll also do testing thoroughly in order to enhance the **quality of the product**.
+
+- **Measuring the amount of work remaining**: We will keep track of the amount of work that is left to be done in each sprint. To do that, we will use burndown charts.
+
+
 ## Our Team
 
 <img src="./docs/images/team.png" width=100% />
