@@ -87,7 +87,7 @@ Given the high-level requirements of the project, we were able to split the requ
 
 ## ML Workflow
 
-Following is the workflow that we have planned for the machine learning aspect of the project. All the data processing and machine learning implementations will be done in [this](https://github.com/sathiiii/sobriety-detection-using-mobile-phone-gyroscope-data/tree/8afea3cb84adac050bc8006ac43bcd78b98fd71a) repository separately because of the git LFS constraints.
+Following is the workflow that we have planned for the machine learning aspect of the project. All the data processing and machine learning implementations will be done in [this](https://github.com/sathiiii/sobriety-detection-using-mobile-phone-gyroscope-data) repository separately because of the git LFS constraints.
 
 ### Data Gathering
 
@@ -112,7 +112,16 @@ The accelerometer data was collected from smartphones at a sampling rate of 40Hz
 
 ### Data Cleaning & Preprocessing
 
+The basic cleaning procedures that can be done on time-series data are dropping the null / zero values, removing the outliers, etc. However, in addition to those, the data preparation steps mainly depends on the approach that we take to solve our time-series classification problem. Given the goal to detect sobriety using mobile phone gyroscope data (however, since we'll be using accelerometer data as a proof of concept, the further sections will mention about accelerometer data and not gyroscope data), there're two ways to build a classifier model:
+
+1. Personalized classifier model: Model sobriety classification from the data **per participant**.
+2. Generalized classifier model: Here, the model will be trained on **cross-participant** data. Thus, the model will be able to detect sobriety from any participant's data.
+
+What we're interested in is the latter approach because our goal is to build a generalized classifier model. Therefore, standardization of the data is certainly required since the data collected from different participants involves various types of smartphone sensors. Normalizing the data across participants after per participant standardization may also be useful.
+
 ### Data Segmentation
+
+Data segmentation is the next step in the data preparation process after cleaning and preprocessing. 
 
 ### Feature Extraction
 
