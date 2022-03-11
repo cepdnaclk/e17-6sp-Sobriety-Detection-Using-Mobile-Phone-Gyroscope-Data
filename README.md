@@ -109,7 +109,7 @@ We could use a RPC or REST API using Node.js Stream API to receive a stream of g
     
 To overcome these problems, we came up with a publish-subscribe architecture using MQTT protocol
 
-## Publish-Subscribe Architecture
+### Publish-Subscribe Architecture
 
 (to be edited)
 
