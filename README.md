@@ -8,9 +8,9 @@
 - [Prior Work](#prior-work)
 - [Our Proposed Approach](#our-proposed-approach)
 - [What needs to be accomplished](#what-needs-to-be-accomplished)
-- [Backend Server]
-    - [Using Client-Server Architecture]
-    - [Using Publish-Subscriber Architecture]
+- [Backend Server](#backend-server)
+    - [Using Client-Server Architecture](#client-server-architecture)
+    - [Using Publish-Subscribe Architecture](#publish-subscribe-architecture)
 - [ML Workflow](#ml-workflow)
     - [Data Gathering](#data-gathering)
     - [Data Cleaning & Preprocessing](#data-cleaning-&-preprocessing)
@@ -108,6 +108,10 @@ We could use a RPC or REST API using Node.js Stream API to receive a stream of g
 - There is no way for the server to establish a connection with the user and send messages/data. The user always has to be the one to establish the connection. 
     
 To overcome these problems, we came up with a publish-subscribe architecture using MQTT protocol
+
+## Publish-Subscribe Architecture
+
+(to be edited)
 
 ## ML Workflow
 
