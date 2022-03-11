@@ -1,26 +1,12 @@
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const mqtt = require('mqtt')
+var toBuffer = require('typedarray-to-buffer')
 
-
-// options for connecting to mqtt broker
 const host = 'broker.hivemq.com'
 const port = '1883'
-const clientId = `mqtt_ServerClient`
+const clientId = `mqtt_MobileClient`
 
 const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`
-
-
-// options for writing a csv file
-const csvWriter = createCsvWriter({
-  path: 'out.csv',
-  header: [
-    {id: 'time', title: 'Time'},
-    {id: 'xval', title: 'XVal'},
-    {id: 'yval', title: 'YVal'},
-    {id: 'zval', title: 'ZVal'},
-  ]
-});
 
 // const client = mqtt.connect(connectUrl, {
 //   clientId,
@@ -41,7 +27,7 @@ var options = {
   password: '@Mahanama1998'
 }
 
-var ServerClient = mqtt.connect(options);
+var MobileClient = mqtt.connect(options);
 
 
 // const topic = '/nodejs/mqtt'
@@ -54,18 +40,38 @@ const topic = 'ClassifierOutput'
 //   })
 // })
 
-ServerClient.on('connect', () => {
+MobileClient.on('connect', () => {
   console.log('Connected')
-  ServerClient.subscribe([topic], () => {
+  MobileClient.subscribe([topic], () => {
     console.log(`Successfully subscribed to topic '${topic}'`)
   })
 })
 
-ServerClient.on('message', (topic, payload) => {
-    // console.log('Received Message:', topic, payload.toString())
-    csvWriter
-    .writeRecords(JSON.parse(payload))
-    .then(()=> console.log('The CSV file was written successfully'));
-  })
-  
+const data = [
+  {
+    time: 'time1',
+    xval: 'xval1',
+    yval: 'yval1',
+    zval: 'zval1'
+  }, {
+    time: 'time2',
+    xval: 'xval2',
+    yval: 'yval2',
+    zval: 'zval2',
+  }, {
+    time: 'time3',
+    xval: 'xval3',
+    yval: 'yval3',
+    zval: 'zval3'
+  }
+];
+// var arr = new Uint8Array(data)
+// var arr = toBuffer(data)
+var arr = JSON.stringify(data);
 
+
+MobileClient.publish(topic, arr, { qos: 2, retain: true }, (error) => {
+  if (error) {
+    console.error(error)
+  }
+})
