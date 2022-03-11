@@ -111,7 +111,8 @@ To overcome these problems, we came up with a publish-subscribe architecture usi
 
 ### Publish-Subscribe Architecture
 
-(to be edited)
+We are using the MQTT protocol with hivemq public broker to implement the connection between the server and the mobile phones.
+[write more on this after immplementing the server and the mobile app]
 
 ## ML Workflow
 
