@@ -91,19 +91,23 @@ Given the high-level requirements of the project, we were able to split the requ
 ## Backend Server
 
 We need a backend server to implement the following
-    - Receive and handle streams of data from multiple users.
-    - Run the classifier and obtain a result.
-    - Return the result to the relevant user.
+- Receive and handle streams of data from multiple users.
+- Run the classifier and obtain a result.
+- Return the result to the relevant user.
 To achieve the above using a scalable backend server, we considered the following 2 architectures.
 
 ### Client-Server Architecture
 
-We could use a RPC or REST API using Node.js Stream API to receive a stream of gyroscopic data from the users and return a result after running the classifier on the clean data extracted after preprocessing the streams of gyroscopic data received from the users. This architecture had a number of problems for our use case
-    - The connection between the client and the server will have to be kept alive until
-        - the entire stream of data is sent to the server
-        - data received by the server is preprocessed and the required features are extracted.
-        - the classier runs and returns the result
+We could use a RPC or REST API using Node.js Stream API to receive a stream of gyroscopic data from the users and return a result after running the classifier on the clean data extracted after preprocessing the streams of gyroscopic data received from the users. This architecture had a number of problems for our use case.
+- The connection between the client and the server will have to be kept alive until:
+    - the entire stream of data is sent to the server
+    - data received by the server is preprocessed and the required features are extracted.
+    - the classier runs and returns the result
         this could take awhile, but the connection will have to be kept alive idle during this time. Since a large number of clients are expected to connect with the server, these idle connections could add upto a large overhead.
+    
+- There is no way for the server to establish a connection with the user and send messages/data. The user always has to be the one to establish the connection. 
+    
+To overcome these problems, we came up with a publish-subscribe architecture using MQTT protocol
 
 ## ML Workflow
 
