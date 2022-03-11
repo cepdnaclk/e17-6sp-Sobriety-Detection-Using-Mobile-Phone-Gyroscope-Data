@@ -1,4 +1,5 @@
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const fastcsv = require('fast-csv');
+const fs = require('fs');
 const mqtt = require('mqtt')
 
 
@@ -11,16 +12,7 @@ const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`
 
 
-// options for writing a csv file
-const csvWriter = createCsvWriter({
-  path: 'out.csv',
-  header: [
-    {id: 'name', title: 'Name'},
-    {id: 'surname', title: 'Surname'},
-    {id: 'age', title: 'Age'},
-    {id: 'gender', title: 'Gender'},
-  ]
-});
+
 
 // const client = mqtt.connect(connectUrl, {
 //   clientId,
@@ -62,10 +54,14 @@ ServerClient.on('connect', () => {
 })
 
 ServerClient.on('message', (topic, payload) => {
-    // console.log('Received Message:', topic, payload.toString())
-    csvWriter
-    .writeRecords(JSON.parse(payload))
-    .then(()=> console.log('The CSV file was written successfully'));
+    console.log('Received Message:', topic, payload.toString())
+    // csvWriter
+    // .writeRecords(payload.toString())
+    // .then(()=> console.log('The CSV file was written successfully'));
+    const ws = fs.createWriteStream("out.csv");
+    fastcsv
+    .write(payload, { headers: true })
+    .pipe(ws);
   })
   
 

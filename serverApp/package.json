@@ -12,9 +12,13 @@
     "csv-writer": "^1.6.0",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "fast-csv": "^4.3.6",
+    "fs": "^0.0.1-security",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "pug": "^3.0.2"
+    "mqtt": "^4.3.6",
+    "pug": "^3.0.2",
+    "typedarray-to-buffer": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
