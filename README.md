@@ -8,6 +8,9 @@
 - [Prior Work](#prior-work)
 - [Our Proposed Approach](#our-proposed-approach)
 - [What needs to be accomplished](#what-needs-to-be-accomplished)
+- [Backend Server](#backend-server)
+    - [Using Client-Server Architecture](#client-server-architecture)
+    - [Using Publish-Subscribe Architecture](#publish-subscribe-architecture)
 - [ML Workflow](#ml-workflow)
     - [Data Gathering](#data-gathering)
     - [Data Cleaning & Preprocessing](#data-cleaning-&-preprocessing)
@@ -84,6 +87,32 @@ Given the high-level requirements of the project, we were able to split the requ
 - **A server that can serve the model**: We need to create a server that runs the trained model and can serve the model to the e-scooter sharing services via an API.
 - **A mobile phone application**: We need to create a (prototype) mobile phone application that can measure gyroscope data and send them to the server in real-time as well as to display the results.
 - **The server should be scalable, it must be able to recieve and handle streams of data from multiple users, and it must be able to run the classifier model in real-time for multiple users**: We need to find solutions for all these challenges. We will need to parallelize the server program to handle multiple users. Using HTTP/2 might be a good option since it is highly efficient, and has fully asynchronous multiplexing of requests using streams.
+
+## Backend Server
+
+We need a backend server to implement the following
+- Receive and handle streams of data from multiple users.
+- Run the classifier and obtain a result.
+- Return the result to the relevant user.
+To achieve the above using a scalable backend server, we considered the following 2 architectures.
+
+### Client-Server Architecture
+
+We could use a RPC or REST API using Node.js Stream API to receive a stream of gyroscopic data from the users and return a result after running the classifier on the clean data extracted after preprocessing the streams of gyroscopic data received from the users. This architecture had a number of problems for our use case.
+- The connection between the client and the server will have to be kept alive until:
+    - the entire stream of data is sent to the server
+    - data received by the server is preprocessed and the required features are extracted.
+    - the classier runs and returns the result
+        this could take awhile, but the connection will have to be kept alive idle during this time. Since a large number of clients are expected to connect with the server, these idle connections could add upto a large overhead.
+    
+- There is no way for the server to establish a connection with the user and send messages/data. The user always has to be the one to establish the connection. 
+    
+To overcome these problems, we came up with a publish-subscribe architecture using MQTT protocol
+
+### Publish-Subscribe Architecture
+
+We are using the MQTT protocol with hivemq public broker to implement the connection between the server and the mobile phones.
+[write more on this after immplementing the server and the mobile app]
 
 ## ML Workflow
 
