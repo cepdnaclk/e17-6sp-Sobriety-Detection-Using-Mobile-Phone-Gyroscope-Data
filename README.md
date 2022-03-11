@@ -121,7 +121,18 @@ What we're interested in is the latter approach because our goal is to build a g
 
 ### Data Segmentation
 
-Data segmentation is the next step in the data preparation process after cleaning and preprocessing. 
+Data segmentation is the next step in the data preparation process after cleaning and preprocessing. Raw time-series data must be **re-framed** as a supervised learning dataset before we can start using machine learning / deep learning algorithms. There is no concept of input and output features in time-series data. Instead, we must choose the variable to be predicted and use feature engineering to construct all of the inputs that will be used to make predictions for future time steps. In order to extract the features, we must segment the huge stream of data into smaller chunks. This segmentation process is also known as **windowing**.
+
+There're two popular ways of windowing:
+
+1. Discrete windows.
+2. Overlapping windows with 50% overlap: This ensures that every subsequent row in the transformed dataset has some information from the data in previous window as well.
+
+Choosing the optimal window size can be a crucial step in the data segmentation process. What we should aim for is to extract the repetitive patterns (features) in the motion data. Thus, too less window-size may not capture the motion correctly, while too large window-size results in less data points in transformed dataset for training.
+
+<img src="./docs/images/features.png" width=100% />
+
+[[Source]](https://towardsdatascience.com/feature-engineering-on-time-series-data-transforming-signal-data-of-a-smartphone-accelerometer-for-72cbe34b8a60)
 
 ### Feature Extraction
 
