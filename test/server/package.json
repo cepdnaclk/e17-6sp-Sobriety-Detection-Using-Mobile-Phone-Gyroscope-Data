@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "csv-write-stream": "^2.0.0",
+    "express": "^4.17.3",
+    "google-protobuf": "^3.20.0-rc.1",
+    "nodemon": "^2.0.15",
+    "socketio": "^1.0.0"
+  }
+}

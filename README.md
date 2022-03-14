@@ -14,7 +14,7 @@
 - [ML Workflow](#ml-workflow)
     - [Data Gathering](#data-gathering)
     - [Data Cleaning & Preprocessing](#data-cleaning-&-preprocessing)
-    - [Data Segmenation](#data-segmenation)
+    - [Data Segmentation](#data-segmentation)
     - [Feature Extraction](#feature-extraction)
     - [Training Classifiers](#training-classifiers)
     - [Evaluating Performance](#evaluating-performance)
@@ -141,7 +141,9 @@ The accelerometer data was collected from smartphones at a sampling rate of 40Hz
 
 ### Data Cleaning & Preprocessing
 
-The basic cleaning procedures that can be done on time-series data are dropping the null / zero values, removing the outliers, etc. However, in addition to those, the data preparation steps mainly depends on the approach that we take to solve our time-series classification problem. Given the goal to detect sobriety using mobile phone gyroscope data (however, since we'll be using accelerometer data as a proof of concept, the further sections will mention about accelerometer data and not gyroscope data), there're two ways to build a classifier model:
+The basic cleaning procedures that can be done on time-series data are dropping the null and zero values. Also, for each axis of accelerometer data, the outliers (noise) must be removed using an appropriate filter (in frequency domain). According to a paper mentioned above, it was found that a 15th order Chebyshev type II filter works well with fstop = 2.7Hz because the **average human walking frequency** is about 2Hz. As mentioned in the previous section, the TAC data is already cleaned and does not need any further cleaning.
+
+In addition to cleaning, the data preparation steps mainly depends on the approach that we take to solve our time-series classification problem. Given the goal to detect sobriety using mobile phone gyroscope data (however, since we'll be using accelerometer data as a proof of concept, the further sections will mention about accelerometer data and not gyroscope data), there're two ways to build a classifier model:
 
 1. Personalized classifier model: Model sobriety classification from the data **per participant**.
 2. Generalized classifier model: Here, the model will be trained on **cross-participant** data. Thus, the model will be able to detect sobriety from any participant's data.

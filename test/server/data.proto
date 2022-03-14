@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+message Data {
+    int64 timestamp = 1;
+    float x = 2;
+    float y = 3;
+    float z = 4;
+}
+
+message DataList {
+    repeated Data data = 1;
+}
