@@ -71,8 +71,8 @@ app.use(express.urlencoded({ extended: false }));
 /////////////////////////////////////////////////////////////////////////////////
 // insert the routes here
 // app.use('/', indexRouter);  
-app.use('/users', usersRouter);
-app.use('/users', adminsRouter);
+app.use('/user', usersRouter);
+app.use('/admin', adminsRouter);
 
 /////////////////////////////////////////////////////////////////////////////////
 
