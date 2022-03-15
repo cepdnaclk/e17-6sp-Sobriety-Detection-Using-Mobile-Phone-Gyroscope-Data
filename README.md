@@ -54,7 +54,7 @@ Drunk riding is a big problem with shared electric scooters. It’s just as ille
 
 The electric scooter company [*Lime*](https://www.li.me/electric-scooter) has also taken a similar safety measure to avoid drunk riding. Those who are trying to rent a Lime after 10pm are asked to confirm they are capable of controlling the scooters. When the rider opens the app, a message pops up warning that drinking and riding is dangerous and illegal, and calls the user to ask themselves whether they're safe to ride. It requires the word "yes" to be in before the scooter will unlock.
 
-Following is a drunk test concept for scooter sharing services that was found on dribble (source: https://dribbble.com/shots/11582376-Lime-Drunk-Test).
+Following is a drunk test concept for scooter sharing services that was found on dribble. [[Source]](https://dribbble.com/shots/11582376-Lime-Drunk-Test)
 
 <img src="docs/images/drunk-test.gif" width="100%" />
 
