@@ -31,7 +31,7 @@ var MobileClient = mqtt.connect(options);
 
 
 // const topic = '/nodejs/mqtt'
-const topic = 'ClassifierOutput'
+const topic = 'gyro/savindu'
 
 // ServerClient.on('connect', () => {
 //   console.log('Connected')
@@ -71,6 +71,7 @@ var arr = JSON.stringify(data);
 
 
 MobileClient.publish(topic, arr, { qos: 2, retain: true }, (error) => {
+  console.log('Published data: \n', arr);
   if (error) {
     console.error(error)
   }
