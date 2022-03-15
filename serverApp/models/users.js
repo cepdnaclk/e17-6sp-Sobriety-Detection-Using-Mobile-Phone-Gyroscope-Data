@@ -6,7 +6,8 @@ const usersSchema = new mongoose.Schema({
     name: {type: String, required: true},
     email: {type: String, required: true, unique: true},  // student names and emails are required
     password: {type: String, default: '', select: false},
-    isRegistered: {type: Boolean, default: false}
+    isRegistered: {type: Boolean, default: false},
+    gyroReadings: [{x: String, y: String, z: String}]
 
 }, {collection: 'users'})
 
