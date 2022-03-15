@@ -90,7 +90,7 @@ router.post('/login', (req, res) => {
     // try{
     admins.findOne({ email }).select("+password")  
     .then(async admin => {
-        // console.log(admin);
+        console.log(admin);
         if(!admin){
             return res.status(404).json({status: 'failure', message: "Email does not exist"});
         }
@@ -100,6 +100,8 @@ router.post('/login', (req, res) => {
         
         try {
             const isMatch = await admin.matchPasswords(password);  // AWAIT WORKS
+            // console.log('1111111');
+            
             // console.log(isMatch);
 
             if(!isMatch){
@@ -109,6 +111,8 @@ router.post('/login', (req, res) => {
             // login successful
             // sending token to admin
             const token = await admin.getSignedToken();  // AWAIT WORKS
+            // console.log('2222222');
+
             // console.log(token);
             // sending the token to the user
             res.json({status: 'success', token});
@@ -135,14 +139,6 @@ router.post('/login', (req, res) => {
  */
 // add new admin to the database
 router.post('/admins/single', protectAdmin, (req, res) => {
-    // method to add a new entry to the user relation in the database
-    /**
-     * write code to add student to the database
-     */
-    // not authorizing if the call is not done by a super-admin
-    // if(req.admin.role != 'super-admin') {
-    //     return res.status(401).json({status: 'failure', message: 'Your admin role is not authorized to add new admins'});
-    // }    
 
     const record = req.body;
     // console.log('Request body: ' + record);
@@ -158,12 +154,6 @@ router.post('/admins/single', protectAdmin, (req, res) => {
     })
     .catch(err => res.status(400).json({status: 'failure', message: "Following error occured while trying to create a new admin entry", error: String(err)}));
     
- 
-    // res.json({status: 'Addded new admin to the database'});  // response after succcesfully creating a new exam schedule
-
-
-    // redirecting to the login page after a successful registration
-    // res.redirect('/*path of the page to redirect to after regitering */'); 
 });
 
 ////////////////////////////////////////////////////////////////////
@@ -193,7 +183,7 @@ router.post('/users/single', protectAdmin, (req, res) => {
     // saves the new admin object
     newUser.save()
     .then(() => {
-        res.json({status: 'success', message: 'Addded new user to the database', createdEntry: newAdmin});
+        res.json({status: 'success', message: 'Addded new user to the database', createdEntry: newUser});
         // console.log('Created new user entry: ' + newUser);
     })
     .catch(err => res.status(400).json({status: 'failure', message: "Following error occured while trying to create a new user entry", error: String(err)}));
