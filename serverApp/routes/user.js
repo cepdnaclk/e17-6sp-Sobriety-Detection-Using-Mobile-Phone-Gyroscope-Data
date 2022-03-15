@@ -130,6 +130,25 @@ router.post('/login', (req, res) => {
 
 // API calls related to mqtts
 
+// GET request to get the details to publish the data
+router.get('/topic', protectUser, (req, res) => {
+    // const req_body = req.body;
+    // console.log('Request body: ' + req_body);
 
+    // const records = await admins.find(req_body);
+    // console.log('Sending response: ' + records);
+
+    // sending the topic to the user in a json object
+    var options = {
+        host: process.env.MQTT_HOST || '',   
+        port: process.env.MQTT_PORT || 3000,
+        protocol: process.env.MQTT_PROTOCOL || '',
+        username: process.env.MQTT_USERNAME || '',
+        password: process.env.MQTT_PASSWORD || '',
+        topic: process.env.MQTT_TOPIC+req.user.id || ''
+      }
+    res.json(options);
+    admins.find()
+});
 
 module.exports = router;

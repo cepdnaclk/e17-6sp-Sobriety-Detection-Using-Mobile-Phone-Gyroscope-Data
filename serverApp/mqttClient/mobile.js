@@ -1,11 +1,14 @@
 const mqtt = require('mqtt')
 var toBuffer = require('typedarray-to-buffer')
 
-const host = 'broker.hivemq.com'
-const port = '1883'
-const clientId = `mqtt_MobileClient`
+// const host = 'broker.hivemq.com'
+// const port = '1883'
+// const clientId = `mqtt_MobileClient`
 
-const connectUrl = `mqtt://${host}:${port}`
+// setting environment variables
+require('dotenv').config({path: '../config.env'});
+
+// const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`
 
 // const client = mqtt.connect(connectUrl, {
@@ -19,19 +22,30 @@ const connectUrl = `mqtt://${host}:${port}`
 
 // const ServerClient = mqtt.connect(connectUrl)
 
+// var options = {
+//   host: 'd7ddd60285be4c0285af25bef2ac7d5e.s2.eu.hivemq.cloud',
+//   port: 8883,
+//   protocol: 'mqtts',
+//   username: 'e17251',
+//   password: '@Mahanama1998'
+// }
+
+
 var options = {
-  host: 'd7ddd60285be4c0285af25bef2ac7d5e.s2.eu.hivemq.cloud',
-  port: 8883,
-  protocol: 'mqtts',
-  username: 'e17251',
-  password: '@Mahanama1998'
+  host: process.env.MQTT_HOST || '',   
+  port: process.env.MQTT_PORT || 3000,
+  protocol: process.env.MQTT_PROTOCOL || '',
+  username: process.env.MQTT_USERNAME || '',
+  password: process.env.MQTT_PASSWORD || '',
+  useSSL: true
 }
 
 var MobileClient = mqtt.connect(options);
 
 
 // const topic = '/nodejs/mqtt'
-const topic = 'gyro/savindu'
+const topic = process.env.MQTT_TOPIC+'thisistheuserid'
+console.log({topic});
 
 // ServerClient.on('connect', () => {
 //   console.log('Connected')
@@ -49,20 +63,17 @@ MobileClient.on('connect', () => {
 
 const data = [
   {
-    time: 'time1',
-    xval: 'xval1',
-    yval: 'yval1',
-    zval: 'zval1'
+    x: 'xval1',
+    y: 'yval1',
+    z: 'zval1'
   }, {
-    time: 'time2',
-    xval: 'xval2',
-    yval: 'yval2',
-    zval: 'zval2',
+    x: 'xval2',
+    y: 'yval2',
+    z: 'zval2',
   }, {
-    time: 'time3',
-    xval: 'xval3',
-    yval: 'yval3',
-    zval: 'zval3'
+    x: 'xval3',
+    y: 'yval3',
+    z: 'zval3'
   }
 ];
 // var arr = new Uint8Array(data)

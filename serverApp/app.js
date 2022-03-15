@@ -32,6 +32,32 @@ db.once('open', () => console.log('Connected to mongoose...'));
 // .then(() => console.log('Connected to atlas MongoDB...'))
 // .catch(err => console.log(err));
 
+
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+// spawning a new process to run the mqtt client server
+var { spawn } = require('child_process');
+
+const childPython = spawn('node', ['./mqttClient/serverClient.js'])
+
+childPython.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+});
+
+childPython.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+})
+
+childPython.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+
 // importing the modules containing the routers  (can also straight awa require as the second argument of app.use())
 // var indexRouter = require('./routes/index');
 // var usersRouter = require('./routes/users');
