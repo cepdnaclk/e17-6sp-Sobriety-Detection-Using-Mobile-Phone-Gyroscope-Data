@@ -31,7 +31,7 @@ Alcohol is a substance that reduces the function of the brain, impairing thinkin
 
 Source: Global status report on road safety 2015 |  Source: Sri Lanka Police (Sunday Observer, 13th February 2022)
 :-------------------------:|:-------------------------:
-<img src="docs/images/stat1.webp" width=100% />  |  <img src="docs/images/stat2.webp" width=100% />
+<img src="docs/images/stat1.webp" width="100%" />  |  <img src="docs/images/stat2.webp" width="100%" />
 
 An *e-scooter* or electric scooter is a stand-up scooter powered by an electric motor classified as a form of micro-mobility. Recently, electric kick scooters (e-scooters) have grown in popularity with the introduction of scooter-sharing systems that use apps allowing users to rent the scooters by the minute. The following is a picture of a dock of e-scooters just for the reference of the reader.
 
