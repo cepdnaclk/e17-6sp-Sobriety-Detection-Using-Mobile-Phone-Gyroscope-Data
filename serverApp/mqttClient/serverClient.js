@@ -58,7 +58,7 @@ var ServerClient = mqtt.connect(options);
 
 
 // const topic = '/nodejs/mqtt'
-const topic = 'gyroData/user/+'
+const topic = process.env.MQTT_TOPIC+'+'   // 'gyroData/user/id'
 
 // ServerClient.on('connect', () => {
 //   console.log('Connected')
@@ -83,33 +83,33 @@ ServerClient.on('message', (topic, payload) => {
     const uid = topic.split("/")[2]
     console.log(uid);
 
-    // // checking whether the user is a registered user
-    // users.findOne({uid}).select('+password')  // finds the admin by email
-    // .then(user => {
-    //   if(user) {
-    //     if(user.isRegistered){
-    //       var newData = JSON.parse(payload)
-    //       if(user.gyroData.length > 20){
-    //         user.gyroData.splice(0, newData.length);
-    //       }
-    //       user.gyroData = user.gyroData.concat(newData)  // WILL HAVE TO CHANGE DEPENDING ON THE RECEIVING DATA FORMAT
-    //     }
-    //     else {
-    //       /**
-    //        * write what to do if the user sending data is not registered
-    //        */
-    //     }
-    //   }
-    //   else{
-    //     /**
-    //      * write what to do if the person sending the data is not a user
-    //      */
-    //   }
-    // })
-    // .catch(err => {
-    //   console.error(String(err));
-    //   // res.status(400).json({status: 'failure', message: 'Error occured while trying to find the admin with the given email', error: String(err)})  // CHECK THE STATUS CODE
-    // });
+    // checking whether the user is a registered user
+    users.findOne({uid}).select('+password')  // finds the admin by email
+    .then(user => {
+      if(user) {
+        if(user.isRegistered){
+          var newData = JSON.parse(payload)
+          if(user.gyroData.length > 20){           // USE A THREAD POOL
+            user.gyroData.splice(0, newData.length);
+          }
+          user.gyroData = user.gyroData.concat(newData)  // WILL HAVE TO CHANGE DEPENDING ON THE RECEIVING DATA FORMAT
+        }
+        else {
+          /**
+           * write what to do if the user sending data is not registered
+           */
+        }
+      }
+      else{
+        /**
+         * write what to do if the person sending the data is not a user
+         */
+      }
+    })
+    .catch(err => {
+      console.error(String(err));
+      // res.status(400).json({status: 'failure', message: 'Error occured while trying to find the admin with the given email', error: String(err)})  // CHECK THE STATUS CODE
+    });
   })
   
 
