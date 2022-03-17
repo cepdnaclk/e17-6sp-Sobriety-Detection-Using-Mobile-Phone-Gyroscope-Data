@@ -1,10 +1,14 @@
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const mqtt = require('mqtt')
+var mongoose = require('mongoose');
 
 // importing the mongoose models ///////////////////////////////////////////////////////////////////////////////
 
 const users = require('../models/users');  // importing the mongoose model for the collection 'users'
+const gyroReadings = require('../models/gyroReadings');  // importing the mongoose model for the collection 'users'
+const acceleroReadings = require('../models/acceleroReadings');  // importing the mongoose model for the collection 'users'
+
 
 // options for connecting to mqtt broker
 // const host = 'broker.hivemq.com'
@@ -13,6 +17,14 @@ const users = require('../models/users');  // importing the mongoose model for t
 
 // const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`
+////////////////////////////////
+// to connect to atlas mongoDB
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
+const db = mongoose.connection;
+db.on('error', error => console.error(error));
+db.once('open', () => console.log('Connected to mongoose... (SERVER CLIENT)'));
+
+
 
 
 // options for writing a csv file
@@ -59,6 +71,7 @@ var ServerClient = mqtt.connect(options);
 
 // const topic = '/nodejs/mqtt'
 const topic = process.env.MQTT_TOPIC+'+'   // 'gyroData/user/id'
+// console.log('ammatsiri topic: '+ topic);
 
 // ServerClient.on('connect', () => {
 //   console.log('Connected')
@@ -76,40 +89,56 @@ ServerClient.on('connect', () => {
 
 ServerClient.on('message', (topic, payload) => {
     // console.log('Received Message:', topic, payload.toString())
-    csvWriter
-    .writeRecords(JSON.parse(payload))  // TRY WRITING WITHOUT PARSING TO JSON
-    .then(()=> console.log('The CSV file was written successfully'));
+    // csvWriter
+    // .writeRecords(JSON.parse(payload))  // TRY WRITING WITHOUT PARSING TO JSON
+    // .then(()=> console.log('The CSV file was written successfully'));
 
-    const uid = topic.split("/")[2]
-    console.log(uid);
+    const uid_str = topic.split("/")[2]
+    try {
+      // const uid = mongoose.Types.ObjectId(uid_str);
+      console.log(uid_str);
 
-    // // checking whether the user is a registered user
-    // users.findOne({uid}).select('+password')  // finds the admin by email
-    // .then(user => {
-    //   if(user) {
-    //     if(user.isRegistered){
-    //       var newData = JSON.parse(payload)
-    //       if(user.gyroData.length > 20){           // USE A THREAD POOL
-    //         user.gyroData.splice(0, newData.length);
-    //       }
-    //       user.gyroData = user.gyroData.concat(newData)  // WILL HAVE TO CHANGE DEPENDING ON THE RECEIVING DATA FORMAT
-    //     }
-    //     else {
-    //       /**
-    //        * write what to do if the user sending data is not registered
-    //        */
-    //     }
-    //   }
-    //   else{
-    //     /**
-    //      * write what to do if the person sending the data is not a user
-    //      */
-    //   }
-    // })
-    // .catch(err => {
-    //   console.error(String(err));
-    //   // res.status(400).json({status: 'failure', message: 'Error occured while trying to find the admin with the given email', error: String(err)})  // CHECK THE STATUS CODE
-    // });
+      // checking whether the user is a registered user
+      gyroReadings.findOne({user_ref: uid_str})//.select('+password')  // finds the admin by email
+      .then(readingsDoc => {
+        if(readingsDoc) {
+          var newData = JSON.parse(payload)
+          console.log(newData);
+          if(readingsDoc.readings.length+newData.length > 20){           // USE A THREAD POOL
+            readingsDoc.readings.splice(0, readingsDoc.readings.length+newData.length-20);
+          }
+          readingsDoc.readings = readingsDoc.readings.concat(newData)  // WILL HAVE TO CHANGE DEPENDING ON THE RECEIVING DATA FORMAT
+
+          // saving the readings document
+          readingsDoc.save()
+          .then(() =>{
+            console.log('Now total: ' + readingsDoc.readings.length);
+
+          })
+          .catch(err =>{
+            console.log('Error while trying to save readingsDoc -->');
+            console.error(String(err));
+          })
+        }
+        else{
+          /**
+           * write what to do if the person sending the data is not a user
+           */
+          console.log('User not yet registered');
+        }
+      })
+      .catch(err => {
+        // console.log('arbudayata mama wagakiyanne na');
+        console.log('Error while trying to find the user from the database -->');
+        console.error(String(err));
+        // res.status(400).json({status: 'failure', message: 'Error occured while trying to find the admin with the given email', error: String(err)})  // CHECK THE STATUS CODE
+      });
+    }
+    catch (err) {
+      console.error(String(err));
+    }
+
+    
   })
   
 

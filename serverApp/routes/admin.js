@@ -43,7 +43,7 @@ router.post('/register', (req, res) => {
         .then(admin => {
             if(admin) {  // given email exists as a admin
                 // checks whether the email is set or not. to check whether the admin has already registered or not
-                console.log(admin);
+                // console.log(admin);
                 if(admin.isRegistered == false) {  // admin not yet register
                     bcrypt.genSalt(10, (err, salt) => {  //ADD ERROR HANDLING FOR THE genSalt() FUNCTION
                         bcrypt.hash(password0, salt, (err, hash) => {
