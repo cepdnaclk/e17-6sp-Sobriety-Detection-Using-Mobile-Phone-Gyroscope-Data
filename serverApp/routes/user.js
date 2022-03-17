@@ -6,6 +6,9 @@ const path = require('path');
 // importing the mongoose models ///////////////////////////////////////////////////////////////////////////////
 
 const users = require('../models/users');  // importing the mongoose model for the collection 'users'
+const gyroReadings = require('../models/gyroReadings');  // importing the mongoose model for the collection 'users'
+const acceleroReadings = require('../models/acceleroReadings');  // importing the mongoose model for the collection 'users'
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // requiring authorization middleware
@@ -148,7 +151,6 @@ router.get('/topic', protectUser, (req, res) => {
         topic: process.env.MQTT_TOPIC+req.user.id || ''
       }
     res.json(options);
-    admins.find()
 });
 
 module.exports = router;
