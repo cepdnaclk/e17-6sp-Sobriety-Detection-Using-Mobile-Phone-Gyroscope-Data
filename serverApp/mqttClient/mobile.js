@@ -6,7 +6,7 @@ var toBuffer = require('typedarray-to-buffer')
 // const clientId = `mqtt_MobileClient`
 
 // setting environment variables
-require('dotenv').config({path: '../config.env'});
+require('dotenv').config();
 
 // const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`

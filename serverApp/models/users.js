@@ -7,8 +7,8 @@ const usersSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},  // student names and emails are required
     password: {type: String, default: '', select: false},
     isRegistered: {type: Boolean, default: false},
-    gyroReadings: [{x: String, y: String, z: String}]
-
+    gyro_ref: {type: mongoose.Schema.Types.ObjectId, ref: 'gyroReadings'},
+    accelero_ref: {type: mongoose.Schema.Types.ObjectId, ref: 'acceleroReadings'},
 }, {collection: 'users'})
 
 // METHODS USED DURIN LOGIN //////////////////////////////////////////////////////////////////////////////////////

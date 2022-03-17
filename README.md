@@ -167,6 +167,30 @@ Choosing the optimal window size can be a crucial step in the data segmentation 
 
 ### Feature Extraction
 
+In order to fit a classifier model on the training data, we need to extract features from the time-series data. For each axis, we will use a set of statistical metrics such as mean, standard deviation, median, etc. and some spectral features such as spectral entropy, spectral kurtosis, etc. per window of 10 seconds in length. The window size is chosen arbitrarily in the segmentation process and it has to be tuned later on for the optimal performance.
+
+For each feature we will use a two-tiered approach to characterize the data as it changes with time. The idea is to further segment the 10 second window into smaller 1 second windows and compute the metrics for each of these smaller windows. That'll generate 10 features per axis per window making a total of 30 summary statistics per metric (3 x 10). The feature extraction will be done per participant data with the intention of splitting the data into training and test sets by participant (without shuffling the data). Following is a summary of the features that we will be extracting:
+
+**Statistical Features**    |   **Spectral Features**   | **Audio Features**
+:----------------------------|:---------------------------------|:----------------------------
+Mean                          | Spectral Entropy            | MFCC Covariance
+Standard Deviation            | Spectral Centroid           | RMS
+Average Absolute Deviation    | Spectral Spread            |
+Minimum Value                 | Spectral Flux           |
+Maximum Value                 | Spectral Rolloff           |
+Difference in Min/Max values  | Max Frequency |
+Median | Average Power |
+Median Absolute Deviation | Spectral Peak Ratio |
+Zero Crossing Rate| Other Statistical Metrics |
+Interquartile Range| |
+Gait Stretch | |
+Number of Steps | |
+Step Time | |
+Skewness | |
+Kurtosis | |
+
+From the above list of metrics, many number of features will be produced. However, we'll have to reduce the dimentionality in order to make the model training process feasible and efficient enough. There'll also be redundant features as well. Therefore, to keep the most relevant features, we will calculate the feature importance for each feature by converting the feature selection problem into a supervised learning problem. The traditional method of doing feature selection is computing the auto correlation between the features to remove one of the highly correlated feature pairs and keep the others. However, when there're many features, this approach is impractical. Therefore, we will use a Random Forest Regressor to compute the feature importance. To select features automatically, we'll use Recursive Feature Elimination (RFE) that'll use the random forest regressor as the predictive model to weight features and prune those with the smallest weight.
+
 ### Training Classifiers
 
 ### Evaluating Performance
