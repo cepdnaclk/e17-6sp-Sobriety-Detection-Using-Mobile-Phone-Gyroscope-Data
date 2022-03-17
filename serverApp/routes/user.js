@@ -44,7 +44,7 @@ router.post('/register', (req, res) => {
         .then(user => {
             if(user) {  // given email exists as a user
                 // checks whether the email is set or not. to check whether the user has already registered or not
-                console.log(user);
+                // console.log(user);
                 if(user.isRegistered == false) {  // user not yet register
                     bcrypt.genSalt(10, (err, salt) => {  //ADD ERROR HANDLING FOR THE genSalt() FUNCTION
                         bcrypt.hash(password0, salt, (err, hash) => {
@@ -53,14 +53,44 @@ router.post('/register', (req, res) => {
                             user.password = hash;
                             user.isRegistered = true;
                             // saving the user with the new password hash
-                            user.save()
+
+                            // making the gyro readings document for the new user
+                            const userGyroReadings = new gyroReadings({
+                                _id: new mongoose.Types.ObjectId(),
+                                user_ref: user._id
+                            });
+
+                            // making the accelero readings document for the new user
+                            const userAcceleroReadings = new acceleroReadings({
+                                _id: new mongoose.Types.ObjectId(),
+                                user_ref: user._id
+                            });
+
+                            userAcceleroReadings.save()
                             .then(() => {
-                                // success
-                                res.json({status: 'success', message: 'User is now registered'});
+                                userGyroReadings.save()
+                                .then(() => {
+                                    user.gyro_ref = userGyroReadings._id;
+                                    user.accelero_ref = userGyroReadings._id;
+
+                                    user.save()
+                                    .then(() => {
+                                        // success
+                                        res.json({status: 'success', message: 'User is now registered'});
+                                    })
+                                    .catch(err => {
+                                        res.status(400).json({status: 'failure', message: 'Error occured while trying to save the user', error: String(err)})  // CHECK THE STATUS CODE
+                                    }); 
+                                })
+                                .catch(err => {
+                                    res.status(400).json({status: 'failure', message: 'Error occured while trying to save userGyroReadings', error: String(err)})  // CHECK THE STATUS CODE
+                                }); 
+
                             })
                             .catch(err => {
-                                res.status(400).json({status: 'failure', message: 'Error occured while trying to save the password hash', error: String(err)})  // CHECK THE STATUS CODE
-                            }); 
+                                res.status(400).json({status: 'failure', message: 'Error occured while trying to save userAcceleroReadings', error: String(err)})  // CHECK THE STATUS CODE
+                            });   
+                            
                         })
                     })
                 }
