@@ -6,7 +6,7 @@ var toBuffer = require('typedarray-to-buffer')
 // const clientId = `mqtt_MobileClient`
 
 // setting environment variables
-require('dotenv').config();
+require('dotenv').config({path: '../'});
 
 // const connectUrl = `mqtt://${host}:${port}`
 // const connectUrl = `mqtt://${host}`
@@ -22,29 +22,31 @@ require('dotenv').config();
 
 // const ServerClient = mqtt.connect(connectUrl)
 
-// var options = {
-//   host: 'd7ddd60285be4c0285af25bef2ac7d5e.s2.eu.hivemq.cloud',
-//   port: 8883,
-//   protocol: 'mqtts',
-//   username: 'e17251',
-//   password: '@Mahanama1998'
-// }
-
-
 var options = {
-  host: process.env.MQTT_HOST || '',   
-  port: process.env.MQTT_PORT || 3000,
-  protocol: process.env.MQTT_PROTOCOL || '',
-  username: process.env.MQTT_USERNAME || '',
-  password: process.env.MQTT_PASSWORD || '',
-  useSSL: true
+  host: 'd7ddd60285be4c0285af25bef2ac7d5e.s2.eu.hivemq.cloud',
+  port: 8883,
+  protocol: 'mqtts',
+  username: 'e17251',
+  password: '@Mahanama1998'
 }
+
+
+// var options = {
+//   host: process.env.MQTT_HOST || '',   
+//   port: process.env.MQTT_PORT || 3000,
+//   protocol: process.env.MQTT_PROTOCOL || '',
+//   username: process.env.MQTT_USERNAME || '',
+//   password: process.env.MQTT_PASSWORD || '',
+//   useSSL: true
+// }
 
 var MobileClient = mqtt.connect(options);
 
 
-// const topic = '/nodejs/mqtt'
-const topic = process.env.MQTT_TOPIC+'thisistheuserid'
+// const topic = '/nodejs/mqtt'   'gyroData/user/'
+// const topic = process.env.MQTT_TOPIC+'6233161be54d65b84ea6acb6'
+const topic = 'gyroData/user/'+'6233161be54d65b84ea6acb6'
+
 console.log({topic});
 
 // ServerClient.on('connect', () => {
@@ -63,14 +65,17 @@ MobileClient.on('connect', () => {
 
 const data = [
   {
+    count: 1,
     x: 'xval1',
     y: 'yval1',
     z: 'zval1'
   }, {
+    count: 2,
     x: 'xval2',
     y: 'yval2',
     z: 'zval2',
   }, {
+    count: 3,
     x: 'xval3',
     y: 'yval3',
     z: 'zval3'
