@@ -65,14 +65,17 @@ MobileClient.on('connect', () => {
 
 const data = [
   {
+    count: 1,
     x: 'xval1',
     y: 'yval1',
     z: 'zval1'
   }, {
+    count: 2,
     x: 'xval2',
     y: 'yval2',
     z: 'zval2',
   }, {
+    count: 3,
     x: 'xval3',
     y: 'yval3',
     z: 'zval3'

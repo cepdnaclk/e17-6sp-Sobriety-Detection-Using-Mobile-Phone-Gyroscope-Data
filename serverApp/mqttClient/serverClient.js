@@ -87,6 +87,11 @@ ServerClient.on('connect', () => {
   })
 })
 
+/**
+ * Note:
+ * Separate thread used for each message.
+ * Error occurs when 2 (or more) such threads try to access the same document in the database
+ */
 ServerClient.on('message', (topic, payload) => {
     // console.log('Received Message:', topic, payload.toString())
     // csvWriter
