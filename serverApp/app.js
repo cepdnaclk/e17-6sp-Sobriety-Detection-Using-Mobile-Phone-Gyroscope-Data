@@ -3,24 +3,104 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// setting environment variables
+require('dotenv').config();
+
+// var indexRouter = require('./routes/index');
+// var usersRouter = require('./routes/users');
+
+
+// setting up the mongoDB database and mongoose modules
+const mongoose = require('mongoose');
+
+/**
+ * Connecting with the mongodb server
+ * The API server will have the connection with the mongod server as long as the API server is up
+ * refer the following link to try and make custom connections
+ * https://mongoosejs.com/docs/models.html#:~:text=If%20you%20create%20a-,custom%20connection,-%2C%20use%20that%20connection%27s
+ */
+// mongoose.connect('mongodb://localhost:27017/remote_proctoring_system');
+
+////////////////////////////////
+// to connect to atlas mongoDB
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true});
+const db = mongoose.connection;
+db.on('error', error => console.error(error));
+db.once('open', () => console.log('Connected to mongoose...'));
+// .then(() => console.log('Connected to atlas MongoDB...'))
+// .catch(err => console.log(err));
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+// spawning a new process to run the mqtt client server
+var { spawn } = require('child_process');
+
+const childPython = spawn('node', ['./mqttClient/serverClient.js'])
+
+childPython.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+});
+
+childPython.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+})
+
+childPython.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+
+// importing the modules containing the routers  (can also straight awa require as the second argument of app.use())
+// var indexRouter = require('./routes/index');
+// var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
+var adminsRouter = require('./routes/admin');
+
+const { rejects } = require('assert');
+
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.use(cors());
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
+// // view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
+
+// app.use(logger('dev'));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use('/', indexRouter);
+
+//set a static folder
+//this folder is the place where the server searches for the index.html file 
+// first checks inside the public folder for index.html, if not found uses the route to view engine's index
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
+/////////////////////////////////////////////////////////////////////////////////
+// insert the routes here
+// app.use('/', indexRouter);  
+app.use('/user', usersRouter);
+app.use('/admin', adminsRouter);
+
+/////////////////////////////////////////////////////////////////////////////////
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
