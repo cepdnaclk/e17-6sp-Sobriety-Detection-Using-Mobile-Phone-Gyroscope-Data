@@ -79,7 +79,7 @@ export default class Gyro_ extends Component {
   sendMessage = () => {
     console.log('message send.');
     var message = new Paho.MQTT.Message(JSON.stringify(this.state.Arr));
-    message.destinationName = 'gyroData/user/6233161be54d65b84ea6acb6';
+    message.destinationName = 'gyroData/user/623d30d5c4e8c48c09540724';
 
     if (this.state.isConnected) {
       this.state.client.send(message);
