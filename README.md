@@ -193,6 +193,22 @@ From the above list of metrics, many number of features will be produced. Howeve
 
 ### Training Classifiers
 
+After we reframe the data, we can start training some classifiers on the training data. The machine learning algorithms that we'll be using are:
+* Logistic Regression
+* Random Forest
+* Support Vector Machine
+* Decision Tree
+* K-Nearest Neighbors
+* Naive Bayes
+* Gradient Boosting
+
+In parallel, we'll also train some deep learning models on the training data. The models that we'll be using are:
+* Deep ANN
+* LSTM
+* RNN
+* CNN
+* Multivariate Time Series Transformer (following [this paper](https://arxiv.org/pdf/2010.02803.pdf))
+
 ### Evaluating Performance
 
 ## Measuring the Success of the System
