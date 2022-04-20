@@ -116,7 +116,7 @@ We are using the MQTT protocol with hivemq public broker to implement the connec
 
 ## ML Workflow
 
-Following is the workflow that we have planned for the machine learning aspect of the project. All the data processing and machine learning implementations will be done in [this](https://github.com/sathiiii/sobriety-detection-using-mobile-phone-gyroscope-data) repository separately because of the git LFS constraints.
+Following is the workflow that we have planned for the machine learning aspect of the project. All the data processing and machine learning implementations will be done in [this](https://github.com/sathiiii/Sobriety-Detection-Using-Mobile-Phone-Gyroscope-Data) repository separately because of the git LFS constraints.
 
 ### Data Gathering
 
